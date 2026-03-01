@@ -4,6 +4,7 @@ node_modules/
 # Build
 dist/
 *.local
+backend/uploads/
 
 # Env (keep .env.example)
 .env

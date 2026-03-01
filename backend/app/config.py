@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     app_name: str = "MCQ Mining API"
     debug: bool = False
     api_v1_prefix: str = "/api/v1"
+    upload_dir: str = "uploads"
 
     class Config:
         env_file = ".env"
