@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react'
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api/v1'
+// Use VITE_API_URL if set; otherwise same origin + /api/v1 (proxy or same host in prod)
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  `${typeof window !== 'undefined' ? window.location.origin : ''}/api/v1`
 
 interface UploadResponse {
   id: string
@@ -51,8 +54,9 @@ export default function App() {
           body: form,
         })
         if (!res.ok) {
-          const err = await res.text()
-          throw new Error(err || `Upload failed: ${res.status}`)
+          const text = await res.text()
+          const isHtml = text.trimStart().toLowerCase().startsWith('<!doctype') || text.trimStart().toLowerCase().startsWith('<html')
+          throw new Error(isHtml ? `Upload failed (${res.status}). The preview is from your device; the file was not saved to the server. Is the API running at the correct port?` : text || `Upload failed: ${res.status}`)
         }
         const data = (await res.json()) as UploadResponse
         setUploadUrl(data.url)

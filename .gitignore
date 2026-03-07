@@ -5,6 +5,10 @@ node_modules/
 dist/
 *.local
 backend/uploads/
+backend/app/uploads/
+
+# PDFs (e.g. uploaded documents)
+*.pdf
 
 # Env (keep .env.example)
 .env
